@@ -114,6 +114,7 @@ void readFile(char *arcv, vector<Patient> *vp){
             vp->push_back(patient);
             cout << patient << endl;
         }
+        file.close();
     }else{
         cout << "TENGO UN PROBLEMA SENOR" << endl;
     }
