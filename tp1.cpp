@@ -11,6 +11,7 @@
 --4) Modification du OUTPUT
 --5) Lire correctement depuis un fichier //Done
 --6) Ajouter un destructeur
+--7) Trouver comment empecher que deux patient aille le meme noPatient
  -------------------------------------------------------------------------------
  */
 
