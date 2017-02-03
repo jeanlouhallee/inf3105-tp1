@@ -9,10 +9,12 @@
 --3) Redifinir les surcharges d'operateurs booleen pour implementer
      un algorithme NON naif
 --4) Modification du OUTPUT
+--5) Lire correctement depuis un fichier 
  -------------------------------------------------------------------------------
  */
 
 #include <iostream>
+#include <fstream>
 #include <assert.h>
 #include <vector>
 using namespace std;
@@ -103,6 +105,17 @@ void Patient::set_priorite(int priorite){
 modification
  */
 
+void readFile(char *arcv){
+    ifstream file(arcv);
+    if(file){
+        int value = 0;;
+        while(file >> value){
+            cout << value << endl;
+        }
+    }else{
+        cout << "TENGO UN PROBLEMA SENOR" << endl;
+    }
+}
 
 
 int main(int argc, char *arcv[]){
@@ -111,6 +124,7 @@ int main(int argc, char *arcv[]){
         A verifier :
         Est-ce que cette facon de proceder est optimale?
          */
+    /*
         int i = 0;
         Patient p;
         std::vector<Patient> salleAttente;
@@ -124,4 +138,6 @@ int main(int argc, char *arcv[]){
         cout << arcv[0] << endl;
         cout << "Fin du programme" << endl;
         return 0;
+        */
+    readFile(arcv[1]);
 }
