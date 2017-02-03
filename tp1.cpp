@@ -10,6 +10,7 @@
      un algorithme NON naif
 --4) Modification du OUTPUT
 --5) Lire correctement depuis un fichier //Done
+--6) Ajouter un destructeur
  -------------------------------------------------------------------------------
  */
 
@@ -120,7 +121,7 @@ void readFile(char *arcv, vector<Patient> *vp){
 }
 
 
-int main(int argc, char *arcv[]){  
+int main(int argc, char *arcv[]){
     vector<Patient> salleAttente;
     readFile(arcv[1], &salleAttente);
     cout << "-------TEST VECTOR--------" << endl;
