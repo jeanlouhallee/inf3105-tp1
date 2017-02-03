@@ -11,7 +11,7 @@
 
      [N-1] : le moins prioritaire
 
-     Side-Note : Changer vecteur pour une organisation en pile?
+     Side-Note : Changer vecteur pour une organisation en pile? //DONE trivial version
 
    **3)** Redifinir les surcharges d'operateurs booleen pour implementer un algorithme NON naif
 
@@ -19,6 +19,6 @@
 
    **5)** Lire correctement depuis un fichier //DONE
 
-   **6)** Ajouter un destructeur
+   **6)** Ajouter un destructeur//DONE
 
-   **7)** Trouver comment empecher que deux patient aille le meme noPatient
+   **7)** Trouver comment empecher que deux patient aille le meme noPatient //DONE
