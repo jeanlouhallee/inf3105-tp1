@@ -1,4 +1,3 @@
-<p align="center">
    #TASKLIST
 
    #TP1
@@ -22,4 +21,4 @@
    **6)** Ajouter un destructeur
 
    **7)** Trouver comment empecher que deux patient aille le meme noPatient
-   </p>
+   
