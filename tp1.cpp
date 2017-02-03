@@ -5,13 +5,13 @@
    --2) Implementer ou trouver un algorithme de tri ordonner le vecteur de
      [0] : le plus prioritaire a
      [N-1] : le moins prioritaire
-     Side-Note : Changer vecteur pour une organisation en pile?
+     Side-Note : Changer vecteur pour une organisation en pile? //DONE trivial version (lol chieze va etre mad)
    --3) Redifinir les surcharges d'operateurs booleen pour implementer
      un algorithme NON naif
    --4) Modification du OUTPUT
    --5) Lire correctement depuis un fichier //DONE
-   --6) Ajouter un destructeur
-   --7) Trouver comment empecher que deux patient aille le meme noPatient
+   --6) Ajouter un destructeur //DONE
+   --7) Trouver comment empecher que deux patient aille le meme noPatient //DONE
    -------------------------------------------------------------------------------
  */
 
@@ -19,6 +19,7 @@
 #include <fstream>
 #include <vector>
 #include <stdexcept>
+#include <algorithm>
 using namespace std;
 
 int findElem(const vector<int> v, int elem);
@@ -38,6 +39,7 @@ class Patient {
     Patient(int noPatient = -1, int tempAttente = 0, int priorite = 5)
             : _noPatient(noPatient), _tempAttente(tempAttente), _priorite(priorite) {
     }
+    ~Patient() {}
     int get_noPatient();
     int get_tempAttente();
     int get_priorite();
@@ -53,28 +55,31 @@ class Patient {
        On suppose que le DERNIER element du vecteur est CELUI QUI DOIT PASSER EN DERNIER
        p1 < p2 : suppose que p1 est plus prioritaire que p2
      */
-    bool operator< (const Patient &p2){
+
+
+  };
+bool operator< (const Patient &p1, const Patient &p2){
             bool p1PlusPrioritairep2 = false;
-            if (_priorite < p2._priorite) {
+            if (p1._priorite < p2._priorite) {
                     p1PlusPrioritairep2 = true;
             }
             else {
-                    if (_priorite == p2._priorite) {
-                            if (_tempAttente > p2._tempAttente) {
+                    if (p1._priorite == p2._priorite) {
+                            if (p1._tempAttente > p2._tempAttente) {
                                     p1PlusPrioritairep2 = true;
                             }
                     }
             }
             return p1PlusPrioritairep2;
     }
-};
+
 
 vector<int> Patient::listeNoPatient;
 /*
    Surcharge le l'operateur <<. A MODIFIER pour que ca conincide avec les specification du prof pour l'affichage
  */
 ostream& operator << (ostream& os, const Patient& patient) {
-        os << "No Patient : " << patient._noPatient << ", Temp attendu dans la salle d'attente (s) : " << patient._tempAttente << " Priorite : " << patient._priorite;
+        os << "No Patient : " << patient._noPatient << " \t|Temp attendu dans la salle d'attente (s) : " << patient._tempAttente << "\t|Priorite : " << patient._priorite;
         return os;
 }
 /*
@@ -153,6 +158,12 @@ int main(int argc, char *arcv[]){
         vector<Patient> salleAttente;
         readFile(arcv[1], &salleAttente);
         cout << "-------TEST VECTOR--------" << endl;
+        for(int i = 0; i < salleAttente.size(); ++i) {
+                cout << salleAttente[i] << endl;
+        }
+
+        cout << "-------TEST VECTOR Trie--------" << endl;
+        sort(salleAttente.begin(), salleAttente.begin()+salleAttente.size());
         for(int i = 0; i < salleAttente.size(); ++i) {
                 cout << salleAttente[i] << endl;
         }
