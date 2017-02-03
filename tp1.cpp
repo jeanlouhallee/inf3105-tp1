@@ -63,7 +63,9 @@ void Patient::set_tempAttente(int tempAttente){
 void Patient::set_priorite(int priorite){
       _priorite = priorite;
 }
-
+/*
+modification
+ */
 
 
 
