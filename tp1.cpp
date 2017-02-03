@@ -106,17 +106,13 @@ modification
 
 
 int main(int argc, char *arcv[]){
-        /*
-        Structure prototype pour lire les patients
-        A verifier :
-        Est-ce que cette facon de proceder est optimale?
-         */
         int i = 0;
         Patient p;
         std::vector<Patient> salleAttente;
         while (cin >> p) { // Tant que la lecture du patient fonctionne
             salleAttente.push_back(p); // met le patient dans la salle d'attente
             cout << salleAttente[i] << endl; // Affiche le patient
+            ++i;
         }
         if (salleAttente[0] < salleAttente[1])
           cout << "Patient 0 est plus prioritaire que patient 1" << endl;
