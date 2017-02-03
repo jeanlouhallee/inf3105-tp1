@@ -9,7 +9,7 @@
 --3) Redifinir les surcharges d'operateurs booleen pour implementer
      un algorithme NON naif
 --4) Modification du OUTPUT
---5) Lire correctement depuis un fichier
+--5) Lire correctement depuis un fichier //Done
  -------------------------------------------------------------------------------
  */
 
@@ -120,28 +120,7 @@ void readFile(char *arcv, vector<Patient> *vp){
 }
 
 
-int main(int argc, char *arcv[]){
-        /*
-        Structure prototype pour lire les patients
-        A verifier :
-        Est-ce que cette facon de proceder est optimale?
-         */
-    /*
-        int i = 0;
-        Patient p;
-        std::vector<Patient> salleAttente;
-        while (cin >> p) { // Tant que la lecture du patient fonctionne
-            salleAttente.push_back(p); // met le patient dans la salle d'attente
-            cout << salleAttente[i] << endl; // Affiche le patient
-            ++i;
-        }
-        if (salleAttente[0] < salleAttente[1])
-          cout << "Patient 0 est plus prioritaire que patient 1" << endl;
-        cout << argc << endl;
-        cout << arcv[0] << endl;
-        cout << "Fin du programme" << endl;
-        return 0;
-        */
+int main(int argc, char *arcv[]){  
     vector<Patient> salleAttente;
     readFile(arcv[1], &salleAttente);
     cout << "-------TEST VECTOR--------" << endl;
