@@ -9,10 +9,12 @@
 --3) Redifinir les surcharges d'operateurs booleen pour implementer
      un algorithme NON naif
 --4) Modification du OUTPUT
+--5) Lire correctement depuis un fichier
  -------------------------------------------------------------------------------
  */
 
 #include <iostream>
+#include <fstream>
 #include <assert.h>
 #include <vector>
 using namespace std;
@@ -50,6 +52,7 @@ class Patient {
         Surcharge de l'operateur >>. Va nous permettre de lire les donnees facilement en ignorant les espaces
          */
         friend istream& operator >> (istream& is, Patient& patient) {
+
           if(is >> patient._noPatient){
             is >> patient._tempAttente >> patient._priorite;
           }
@@ -103,9 +106,27 @@ void Patient::set_priorite(int priorite){
 modification
  */
 
+void readFile(char *arcv, vector<Patient> *vp){
+    ifstream file(arcv);
+    if(file){
+        Patient patient;
+        while(file >> patient){
+            vp->push_back(patient);
+            cout << patient << endl;
+        }
+    }else{
+        cout << "TENGO UN PROBLEMA SENOR" << endl;
+    }
+}
 
 
 int main(int argc, char *arcv[]){
+        /*
+        Structure prototype pour lire les patients
+        A verifier :
+        Est-ce que cette facon de proceder est optimale?
+         */
+    /*
         int i = 0;
         Patient p;
         std::vector<Patient> salleAttente;
@@ -120,4 +141,11 @@ int main(int argc, char *arcv[]){
         cout << arcv[0] << endl;
         cout << "Fin du programme" << endl;
         return 0;
+        */
+    vector<Patient> salleAttente;
+    readFile(arcv[1], &salleAttente);
+    cout << "-------TEST VECTOR--------" << endl;
+    for(int i = 0; i < salleAttente.size(); ++i){
+        cout << salleAttente[i] << endl;
+    }
 }
