@@ -52,6 +52,7 @@ class Patient {
         Surcharge de l'operateur >>. Va nous permettre de lire les donnees facilement en ignorant les espaces
          */
         friend istream& operator >> (istream& is, Patient& patient) {
+            
           if(is >> patient._noPatient){
             is >> patient._tempAttente >> patient._priorite;
           }
@@ -105,12 +106,13 @@ void Patient::set_priorite(int priorite){
 modification
  */
 
-void readFile(char *arcv){
+void readFile(char *arcv, vector<Patient> *vp){
     ifstream file(arcv);
     if(file){
-        int value = 0;;
-        while(file >> value){
-            cout << value << endl;
+        Patient patient;
+        while(file >> patient){
+            vp->push_back(patient);
+            cout << patient << endl;
         }
     }else{
         cout << "TENGO UN PROBLEMA SENOR" << endl;
@@ -139,5 +141,10 @@ int main(int argc, char *arcv[]){
         cout << "Fin du programme" << endl;
         return 0;
         */
-    readFile(arcv[1]);
+    vector<Patient> salleAttente;
+    readFile(arcv[1], &salleAttente);
+    cout << "-------TEST VECTOR--------" << endl;
+    for(int i = 0; i < salleAttente.size(); ++i){
+        cout << salleAttente[i] << endl;
+    }
 }
