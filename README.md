@@ -1,6 +1,10 @@
-   #TASKLIST
-   #TP1
+
+   TASKLIST
+==================
+   TP1
+==================
    **1)** Modifier le constructeur pour qu'il s'assure que la priorite du patient soit >= 1 et <= 5 // DONE
+
    **2)** Implementer ou trouver un algorithme de tri ordonner le vecteur de
 
      [0] : le plus prioritaire a
@@ -18,4 +22,3 @@
    **6)** Ajouter un destructeur
 
    **7)** Trouver comment empecher que deux patient aille le meme noPatient
-   
