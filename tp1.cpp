@@ -3,15 +3,22 @@
    --1) Modifier le constructeur pour qu'il s'assure que la priorite du patient
      soit >= 1 et <= 5 // DONE
    --2) Implementer ou trouver un algorithme de tri ordonner le vecteur de
-     [0] : le plus prioritaire a
-     [N-1] : le moins prioritaire
-     Side-Note : Changer vecteur pour une organisation en pile? //DONE trivial version
-   --3) Redifinir les surcharges d'operateurs booleen pour implementer
+    [0] : le plus prioritaire a
+    [N-1] : le moins prioritaire
+    Side-Note : Changer vecteur pour une organisation en pile?
+    //DONE
+   --3) Modification du OUTPUT //DONE
+   --4) Lire correctement depuis un fichier //DONE
+   --5) Ajouter un destructeur //DONE
+   --6) Trouver comment empecher que deux patient aille le meme noPatient //DONE
+   --7) Ajout d'une fonction traitementSalleAttente qui ajoute de facon iterati-
+   ve le temps de traitement a la position du patient // DONE
+   --8) Faire la fonction qui fait la moyenne geometrique
+   --9) Afficher les moyennes geometriques
+   --10) Redifinir les surcharges d'operateurs booleen pour implementer
      un algorithme NON naif
-   --4) Modification du OUTPUT
-   --5) Lire correctement depuis un fichier //DONE
-   --6) Ajouter un destructeur //DONE
-   --7) Trouver comment empecher que deux patient aille le meme noPatient //DONE
+   --11)
+   --12)
    -------------------------------------------------------------------------------
  */
 
@@ -40,24 +47,18 @@ class Patient {
             : _noPatient(noPatient), _tempAttente(tempAttente), _priorite(priorite) {
     }
     ~Patient() {}
-    int get_noPatient();
     int get_tempAttente();
-    int get_priorite();
-    void set_noPatient(int noPatient);
     void set_tempAttente(int tempAttente);
-    void set_priorite(int priorite);
     friend bool operator< (const Patient &p1, const Patient &p2);
     friend istream& operator >> (istream& is, Patient& patient);
     friend ostream& operator << (ostream& os, const Patient& patient);
+  };
     /*
        Surcharge naive de l'operateur <. Cette version ne prendra en consideration que la priorité et le temps d'attente
        On suppose que le PREMIER element du vecteur est CELUI QUI DOIT PASSER EN PREMIER
        On suppose que le DERNIER element du vecteur est CELUI QUI DOIT PASSER EN DERNIER
        p1 < p2 : suppose que p1 est plus prioritaire que p2
      */
-
-
-  };
 bool operator< (const Patient &p1, const Patient &p2){
             bool p1PlusPrioritairep2 = false;
             if (p1._priorite < p2._priorite) {
@@ -79,7 +80,7 @@ vector<int> Patient::listeNoPatient;
    Surcharge le l'operateur <<. A MODIFIER pour que ca conincide avec les specification du prof pour l'affichage
  */
 ostream& operator << (ostream& os, const Patient& patient) {
-        os << "No Patient : " << patient._noPatient << " \t|Temp attendu dans la salle d'attente (s) : " << patient._tempAttente << "\t|Priorite : " << patient._priorite;
+        os << "\t" << patient._noPatient << "\t\t" << patient._priorite << "\t\tTemp attendu: " << patient._tempAttente;
         return os;
 }
 /*
@@ -106,39 +107,32 @@ istream& operator >> (istream& is, Patient& patient) {
    A potentiellement enlever vu que le friendship avec << et >> nous permettent de
    lire des patients dans un vecteur facilement
  */
-int Patient::get_noPatient(){
-        return _noPatient;
-}
 int Patient::get_tempAttente (){
         return _tempAttente;
-}
-int Patient::get_priorite(){
-        return _priorite;
-}
-void Patient::set_noPatient(int noPatient){
-        _noPatient = noPatient;
 }
 void Patient::set_tempAttente(int tempAttente){
         _tempAttente = tempAttente;
 }
-void Patient::set_priorite(int priorite){
-        _priorite = priorite;
-}
-
 void readFile(char *arcv, vector<Patient> *vp){
         ifstream file(arcv);
         if(file) {
                 Patient patient;
                 while(file >> patient) {
                         vp->push_back(patient);
-                        cout << patient << endl;
                 }
                 file.close();
         }else{
                 cout << "TENGO UN PROBLEMA SENOR" << endl;
         }
 }
-
+/**
+ * findElem     Comme <vector> ne semblait pas offrir une fonction qui retourne
+ * la premiere occurence d'un element dans un ensemble, nous avons fait une
+ * petite fonction qui parcours l'ensemble
+ * @param  v    vector dans lequel la recherche se fait
+ * @param  elem Element recherche
+ * @return      Retourne la premiere occurence dans l'ensemble
+ */
 int findElem(const vector<int> v, int elem){
         int pos = -1, i;
         bool trouve = false;
@@ -152,19 +146,46 @@ int findElem(const vector<int> v, int elem){
         }
         return pos;
 }
+/**
+ * imprimerSalleAttent  Permet d'afficher l'etat actuel de la salle d'attente
+ * @param p             Salle d'attente a afficher
+ */
+void imprimerSalleAttente(const vector<Patient> &p){
+        int i = 0;
+        for(int i = 0; i < p.size(); ++i) {
+                cout << "\tno_patient\tpriorite" << endl;
+                cout << i+1 << p[i] << endl;
+        }
+
+}
+/**
+ * traiterSalleAttente Fonction prenant en parametre une salle d'attente ainsi que
+ * le delai pour traiter un patient. Ajoute (delaiTraitement*position) a chaque
+ * patient pour savoir combien de temps ça aura pris pour que chacun ait été
+ * traité
+ * @param salleAttente    vecteur de patient
+ * @param delaiTraitement Delai de traitement minimum
+ */
+void traiterSalleAttente(vector<Patient> &salleAttente, int delaiTraitement){
+    int i = 0;
+    for ( i = 0; i < salleAttente.size(); i++){
+          salleAttente[i].set_tempAttente(salleAttente[i].get_tempAttente() + (delaiTraitement*i));
+    }
+}
 
 
 int main(int argc, char *arcv[]){
+        enum {prior2, prior3, prior4, prior5};
         vector<Patient> salleAttente;
+        const int tempTraitement = 5;
+        const int tempPriorite[4] = {900, 1800,3600,7200};
         readFile(arcv[1], &salleAttente);
         cout << "-------TEST VECTOR--------" << endl;
-        for(int i = 0; i < salleAttente.size(); ++i) {
-                cout << salleAttente[i] << endl;
-        }
-
+        imprimerSalleAttent(salleAttente);
         cout << "-------TEST VECTOR Trie--------" << endl;
         sort(salleAttente.begin(), salleAttente.begin()+salleAttente.size());
-        for(int i = 0; i < salleAttente.size(); ++i) {
-                cout << salleAttente[i] << endl;
-        }
+        imprimerSalleAttent(salleAttente);
+        cout << "-------TEST VECTOR apres traitement--------" << endl;
+        traiterSalleAttente(salleAttente, 5);
+        imprimerSalleAttent(salleAttente);
 }
