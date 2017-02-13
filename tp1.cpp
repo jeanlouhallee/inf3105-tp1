@@ -181,11 +181,11 @@ int main(int argc, char *arcv[]){
         const int tempPriorite[4] = {900, 1800,3600,7200};
         readFile(arcv[1], &salleAttente);
         cout << "-------TEST VECTOR--------" << endl;
-        imprimerSalleAttent(salleAttente);
+        imprimerSalleAttente(salleAttente);
         cout << "-------TEST VECTOR Trie--------" << endl;
         sort(salleAttente.begin(), salleAttente.begin()+salleAttente.size());
-        imprimerSalleAttent(salleAttente);
+        imprimerSalleAttente(salleAttente);
         cout << "-------TEST VECTOR apres traitement--------" << endl;
         traiterSalleAttente(salleAttente, 5);
-        imprimerSalleAttent(salleAttente);
+        imprimerSalleAttente(salleAttente);
 }
