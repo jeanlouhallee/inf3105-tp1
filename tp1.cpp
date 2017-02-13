@@ -47,6 +47,7 @@ class Patient {
             : _noPatient(noPatient), _tempAttente(tempAttente), _priorite(priorite) {
     }
     ~Patient() {}
+    int get_priorite();
     int get_tempAttente();
     void set_tempAttente(int tempAttente);
     friend bool operator< (const Patient &p1, const Patient &p2);
@@ -107,11 +108,14 @@ istream& operator >> (istream& is, Patient& patient) {
    A potentiellement enlever vu que le friendship avec << et >> nous permettent de
    lire des patients dans un vecteur facilement
  */
-int Patient::get_tempAttente (){
+int Patient::get_tempAttente(){
         return _tempAttente;
 }
 void Patient::set_tempAttente(int tempAttente){
         _tempAttente = tempAttente;
+}
+int Patient::get_priorite(){
+    return _priorite;
 }
 void readFile(char *arcv, vector<Patient> *vp){
         ifstream file(arcv);
@@ -122,7 +126,7 @@ void readFile(char *arcv, vector<Patient> *vp){
                 }
                 file.close();
         }else{
-                cout << "TENGO UN PROBLEMA SENOR" << endl;
+                cout << "Fichier introuvable." << endl;
         }
 }
 /**
@@ -173,12 +177,46 @@ void traiterSalleAttente(vector<Patient> &salleAttente, int delaiTraitement){
     }
 }
 
+void statistiques(const vector<Patient> *sa, const int tab[]){
+    int i = 0;
+    int nbDeux = 0, nbTrois = 0, nbQuatre = 0, nbCinq = 0;
+    int deuxNOk = 0, troisNOk = 0, quatreNOk = 0, cinqNOk = 0;
+
+    for(i ; i < sa->size(); ++i){
+    
+        if(sa[i]->get_priorite() == 2){
+            ++nbDeux;
+            if( (tab[0] - sa[i]->get_tempAttente()) < 0 ){
+                ++deuxNOk;
+            }
+        }else if(sa[i]->get_priorite() == 3){
+            ++nbTrois;
+            if( (tab[1] - sa[i]->get_tempAttente()) < 0 ){
+                ++troisNOk;
+            }
+
+        }else if(sa[i]->get_priorite() == 4){
+            ++nbQuatre;
+            if( (tab[2] - sa[i]->get_tempAttente()) < 0 ){
+                ++quatreNOk;
+            }
+
+        }else if(sa[i]->get_priorite() == 5){
+            ++nbCinq;
+            if( (tab[3] - sa[i]->get_tempAttente()) < 0 ){
+                ++cinqNOk;
+            }
+
+        }
+    }
+
+}
 
 int main(int argc, char *arcv[]){
         enum {prior2, prior3, prior4, prior5};
         vector<Patient> salleAttente;
         const int tempTraitement = 5;
-        const int tempPriorite[4] = {900, 1800,3600,7200};
+        const int tempPriorite[4] = {15, 30, 60, 120};
         readFile(arcv[1], &salleAttente);
         cout << "-------TEST VECTOR--------" << endl;
         imprimerSalleAttente(salleAttente);
@@ -188,4 +226,5 @@ int main(int argc, char *arcv[]){
         cout << "-------TEST VECTOR apres traitement--------" << endl;
         traiterSalleAttente(salleAttente, 5);
         imprimerSalleAttente(salleAttente);
+        statistiques(&salleAttente, tempPriorite);
 }

@@ -3,4 +3,4 @@ tp1: tp1.o
 	rm *.o
 	clear
 tp1.o: tp1.cpp
-	g++ -c tp1.cpp
+	g++ -c -lm -std=c++11 tp1.cpp 
