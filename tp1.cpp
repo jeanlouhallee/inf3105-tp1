@@ -177,33 +177,33 @@ void traiterSalleAttente(vector<Patient> &salleAttente, int delaiTraitement){
     }
 }
 
-void statistiques(const vector<Patient> *sa, const int tab[]){
+void statistiques(vector<Patient> &sa, const int tab[]){
     int i = 0;
     int nbDeux = 0, nbTrois = 0, nbQuatre = 0, nbCinq = 0;
     int deuxNOk = 0, troisNOk = 0, quatreNOk = 0, cinqNOk = 0;
 
-    for(i ; i < sa->size(); ++i){
+    for(i ; i < sa.size(); ++i){
     
-        if(sa[i]->get_priorite() == 2){
+        if(sa[i].get_priorite() == 2){
             ++nbDeux;
-            if( (tab[0] - sa[i]->get_tempAttente()) < 0 ){
+            if( (tab[0] - sa[i].get_tempAttente()) < 0 ){
                 ++deuxNOk;
             }
-        }else if(sa[i]->get_priorite() == 3){
+        }else if(sa[i].get_priorite() == 3){
             ++nbTrois;
-            if( (tab[1] - sa[i]->get_tempAttente()) < 0 ){
+            if( (tab[1] - sa[i].get_tempAttente()) < 0 ){
                 ++troisNOk;
             }
 
-        }else if(sa[i]->get_priorite() == 4){
+        }else if(sa[i].get_priorite() == 4){
             ++nbQuatre;
-            if( (tab[2] - sa[i]->get_tempAttente()) < 0 ){
+            if( (tab[2] - sa[i].get_tempAttente()) < 0 ){
                 ++quatreNOk;
             }
 
-        }else if(sa[i]->get_priorite() == 5){
+        }else if(sa[i].get_priorite() == 5){
             ++nbCinq;
-            if( (tab[3] - sa[i]->get_tempAttente()) < 0 ){
+            if( (tab[3] - sa[i].get_tempAttente()) < 0 ){
                 ++cinqNOk;
             }
 
@@ -226,5 +226,5 @@ int main(int argc, char *arcv[]){
         cout << "-------TEST VECTOR apres traitement--------" << endl;
         traiterSalleAttente(salleAttente, 5);
         imprimerSalleAttente(salleAttente);
-        statistiques(&salleAttente, tempPriorite);
+        statistiques(salleAttente, tempPriorite);
 }
