@@ -179,42 +179,22 @@ void traiterSalleAttente(vector<Patient> &salleAttente, int delaiTraitement){
 
 void statistiques(vector<Patient> &sa, const int tab[]){
     int i = 0;
-    double nbDeux = 0, nbTrois = 0, nbQuatre = 0, nbCinq = 0;
-    double deuxOk = 0, troisOk = 0, quatreOk = 0, cinqOk = 0;
+    double nbPatient[4] = {0,0,0,0};
+    double nbPatientCorrect[4] = {0,0,0,0};
 
 
     for(i ; i < sa.size(); ++i){
-    
-        if(sa[i].get_priorite() == 2){
-            ++nbDeux;
-            if( (tab[0] - sa[i].get_tempAttente()) >= 0 ){
-                ++deuxOk;
-            }
-        }else if(sa[i].get_priorite() == 3){
-            ++nbTrois;
-            if( (tab[1] - sa[i].get_tempAttente()) >= 0 ){
-                ++troisOk;
-            }
-
-        }else if(sa[i].get_priorite() == 4){
-            ++nbQuatre;
-            if( (tab[2] - sa[i].get_tempAttente()) >= 0 ){
-                ++quatreOk;
-            }
-
-        }else if(sa[i].get_priorite() == 5){
-            ++nbCinq;
-            if( (tab[3] - sa[i].get_tempAttente()) >= 0 ){
-                ++cinqOk;
-            }
-
+            int priorite = sa[i].get_priorite()-2;
+            nbPatient[priorite]++;
+             if(tab[priorite] - sa[i].get_tempAttente() >= 0 ) {
+               nbPatientCorrect[priorite]++;
+             }
         }
+    for (i = 0; i < 4; i++){
+        cout <<"Priorite " << i+2;
+        cout << ", Nb patient correct "  <<nbPatientCorrect[i] << "\t" << endl;
     }
-    cout << sa[0].get_tempAttente() << endl;
-    cout << endl << nbDeux << endl << deuxOk << endl;
-    cout << "--------" << endl << "Priorite 2 " << "Priorite 3 " << "Priorite 4 "  << "Priorite 5" << endl;
-    cout << deuxOk/nbDeux  << "      " << troisOk/nbTrois << "      "  << quatreOk/nbQuatre  << "      " << cinqOk/nbCinq  << endl;
-    cout << (deuxOk/nbDeux) * (troisOk/nbTrois) * (quatreOk/nbQuatre) * (cinqOk/nbCinq) <<endl;
+    cout <<endl;
 }
 
 int main(int argc, char *arcv[]){
