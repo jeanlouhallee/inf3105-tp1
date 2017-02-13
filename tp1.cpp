@@ -27,6 +27,7 @@
 #include <vector>
 #include <stdexcept>
 #include <algorithm>
+#include <math.h>
 using namespace std;
 
 int findElem(const vector<int> v, int elem);
@@ -179,6 +180,8 @@ void traiterSalleAttente(vector<Patient> &salleAttente, int delaiTraitement){
 
 void statistiques(vector<Patient> &sa, const int tab[]){
     int i = 0;
+    double moyenneGeo = 1;
+    double resultat = 0;
     double nbPatient[4] = {0,0,0,0};
     double nbPatientCorrect[4] = {0,0,0,0};
 
@@ -190,11 +193,20 @@ void statistiques(vector<Patient> &sa, const int tab[]){
                nbPatientCorrect[priorite]++;
              }
         }
+
     for (i = 0; i < 4; i++){
-        cout <<"Priorite " << i+2;
-        cout << ", Nb patient correct "  <<nbPatientCorrect[i] << "\t" << endl;
+        if(nbPatient[i] != 0){
+            resultat = nbPatientCorrect[i]/nbPatient[i];
+            cout <<"Priorite " << i+2 << " ";
+            cout << resultat << "\t" << endl;
+            moyenneGeo *= resultat;
+        }else{
+            cout << "Division par zero" << endl;
+        }
+        pow(moyenneGeo, 0.25);
     }
-    cout <<endl;
+
+    cout << moyenneGeo  << endl;
 }
 
 int main(int argc, char *arcv[]){
