@@ -178,6 +178,25 @@ void traiterSalleAttente(vector<Patient> &salleAttente, int delaiTraitement){
     }
 }
 
+int lireTemps(int argc, char *argv){
+    int tempsConsultation = 5;
+    char *endptr;
+
+    if(argc == 3){
+       tempsConsultation = (int)strtol(argv, &endptr, 10);
+       if(endptr == argv || *endptr != '\0'){
+            cerr << "Mauvais temps entré." << endl;
+            exit(-1);
+       }else if(tempsConsultation < 1){
+            cerr << "Le temps de consultation doit être supérieur à 0." << endl;
+            exit(-1);
+       }
+    }
+    
+    
+    return tempsConsultation;
+}
+
 void statistiques(vector<Patient> &sa, const int tab[]){
     int i = 0;
     double moyenneGeo = 1;
@@ -212,7 +231,7 @@ void statistiques(vector<Patient> &sa, const int tab[]){
 int main(int argc, char *arcv[]){
         enum {prior2, prior3, prior4, prior5};
         vector<Patient> salleAttente;
-        const int tempTraitement = 5;
+        const int tempTraitement = lireTemps(argc, arcv[2]);
         const int tempPriorite[4] = {15, 30, 60, 120};
         readFile(arcv[1], &salleAttente);
         cout << "-------TEST VECTOR--------" << endl;
