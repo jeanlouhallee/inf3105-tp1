@@ -1,25 +1,11 @@
-/*
-   --------------------------------TASKLIST----------------------------------------
-   --1) Modifier le constructeur pour qu'il s'assure que la priorite du patient
-     soit >= 1 et <= 5 // DONE
-   --2) Implementer ou trouver un algorithme de tri ordonner le vecteur de
-    [0] : le plus prioritaire a
-    [N-1] : le moins prioritaire
-    Side-Note : Changer vecteur pour une organisation en pile?
-    //DONE
-   --3) Modification du OUTPUT //DONE
-   --4) Lire correctement depuis un fichier //DONE
-   --5) Ajouter un destructeur //DONE
-   --6) Trouver comment empecher que deux patient aille le meme noPatient //DONE
-   --7) Ajout d'une fonction traitementSalleAttente qui ajoute de facon iterati-
-   ve le temps de traitement a la position du patient // DONE
-   --8) Faire la fonction qui fait la moyenne geometrique
-   --9) Afficher les moyennes geometriques
-   --10) Redifinir les surcharges d'operateurs booleen pour implementer
-     un algorithme NON naif
-   --11)
-   --12)
-   -------------------------------------------------------------------------------
+/**
+ *  TP1 INF3105
+ *  Structures de données et algorithmes
+ *  Étienne Carrier CARE
+ *  Jean-Lou Hallée HALJ05129309
+ *
+ *
+ *  Remise : 1 mars 2017
  */
 
 #include <iostream>
@@ -66,14 +52,6 @@ class Patient {
 bool operator < (const Patient &p1, const Patient &p2){
     bool p1PlusPrioritairep2 = false;
 
-  //  double quotientP1 = (double)p1._tempAttente/(double)tab[p1._priorite - 2];
-    //double quotientP2 = (double)p2._tempAttente/(double)tab[p2._priorite - 2];
-/**
-    if((double)p1._tempAttente/(double)tab[p1._priorite - 2] > (double)p2._tempAttente/(double)tab[p2._priorite - 2]){
-        p1PlusPrioritairep2 = true;
-    }
-    **/
-
     if (p1._priorite < p2._priorite) {
         p1PlusPrioritairep2 = true;
     }else {
@@ -83,10 +61,8 @@ bool operator < (const Patient &p1, const Patient &p2){
             }
         }
     }
-
     return p1PlusPrioritairep2;
     }
-
 
 vector<int> Patient::listeNoPatient;
 /*
@@ -133,8 +109,15 @@ void Patient::set_tempAttente(int tempAttente){
 int Patient::get_priorite(){
     return _priorite;
 }
-void readFile(char *arcv, vector<Patient> *vp){
-        ifstream file(arcv);
+
+/**
+ *lireFichier Fonction qui permet de lire le fichier contenant les informations
+ * sur les patients.
+ * @param argv Argument du programme contenant le nom du fichier a lire.
+ * @param vp le vector de patient dans lequel il faut ajouter les patients.
+ */
+void lireFichier(char *argv, vector<Patient> *vp){
+        ifstream file(argv);
         if(file) {
                 Patient patient;
                 while(file >> patient) {
@@ -143,15 +126,17 @@ void readFile(char *arcv, vector<Patient> *vp){
                 file.close();
         }else{
                 cout << "Fichier introuvable." << endl;
+                exit(0);
         }
 }
+
 /**
  * findElem     Comme <vector> ne semblait pas offrir une fonction qui retourne
  * la premiere occurence d'un element dans un ensemble, nous avons fait une
- * petite fonction qui parcours l'ensemblesolodallas
- * @param  v    vector dans lequel la recherche se fait
- * @param  elem Element recherche
- * @return      Retourne la premiere occurence dans l'ensemble
+ * petite fonction qui parcours l'ensemble.
+ * @param  v    vector dans lequel la recherche se fait.
+ * @param  elem Element recherche.
+ * @return      Retourne la premiere occurence dans l'ensemble.
  */
 int findElem(const vector<int> v, int elem){
         int pos = -1, i;
@@ -166,25 +151,27 @@ int findElem(const vector<int> v, int elem){
         }
         return pos;
 }
+
 /**
- * imprimerSalleAttent  Permet d'afficher l'etat actuel de la salle d'attente
- * @param p             Salle d'attente a afficher
+ * imprimerSalleAttente  Permet d'afficher l'etat actuel de la salle d'attente.
+ * @param p Salle d'attente a afficher.
  */
-void imprimerSalleAttente(const vector<Patient> &p){
+void imprimerSalleAttente(const vector<Patient> &patient){
         int i = 0;
-        for(int i = 0; i < p.size(); ++i) {
+        for(int i = 0; i < patient.size(); ++i) {
                 cout << "\tno_patient\tpriorite" << endl;
-                cout << i+1 << p[i] << endl;
+                cout << i+1 << patient[i] << endl;
         }
 
 }
+
 /**
  * traiterSalleAttente Fonction prenant en parametre une salle d'attente ainsi que
  * le delai pour traiter un patient. Ajoute (delaiTraitement*position) a chaque
  * patient pour savoir combien de temps ça aura pris pour que chacun ait été
- * traité
- * @param salleAttente    vecteur de patient
- * @param delaiTraitement Delai de traitement minimum
+ * traité.
+ * @param salleAttente    vecteur de patient.
+ * @param delaiTraitement Delai de traitement minimum.
  */
 void traiterSalleAttente(vector<Patient> &salleAttente, int delaiTraitement){
     int i = 0;
@@ -192,6 +179,14 @@ void traiterSalleAttente(vector<Patient> &salleAttente, int delaiTraitement){
           salleAttente[i].set_tempAttente(salleAttente[i].get_tempAttente() + (delaiTraitement*i));
     }
 }
+/**
+ * lireTemps permet de lire le temps de traitement pour un patient. Elle lit un int
+ * passé en argument au programme. Il s'assure de la validité du nombre entré.
+ * Si aucun argument est passé, la valeur par défaut est 5.
+ * @param argc  La valeur de argc de la fonction main.
+ * @param argv  la valeur de arcv[2] provenant du main (le nombre a valider)
+ * @return le temps de traitement d'un patient.
+ */
 
 int lireTemps(int argc, char *argv){
     int tempsConsultation = 5;
@@ -212,6 +207,12 @@ int lireTemps(int argc, char *argv){
     return tempsConsultation;
 }
 
+/**
+ * statistique permet de calculer la moyenne géométrique correspondant à
+ * la proportion de patient qui passe dans les temps recommandés. Elle calcule
+ * @param sa  La salle d'attente qui contient la liste de tous les patients
+ *            avec tous les temps traités.
+ */
 void statistiques(vector<Patient> &sa){
     int i = 0;
     double moyenneGeo = 1;
@@ -244,6 +245,13 @@ void statistiques(vector<Patient> &sa){
     cout << moyenneGeo  << endl;
 }
 
+/**
+ * deuxiemeTri la fonction qui permet de trier une deuxieme fois la liste de
+ * patients, en essayant d'envoyer les patients impossibles a passer dans
+ * les temps recommandes a la fin de la liste.
+ * @param delaiTraitement Le delai necessaire pour passer un patient.
+ * @param sa  La salle d'attente qui contient la liste de tous les patients.
+ */
 void deuxiemeTri(vector<Patient> &sa, int delaiTraitement){
   int i = 0;
   int temps = 0;
@@ -255,10 +263,8 @@ void deuxiemeTri(vector<Patient> &sa, int delaiTraitement){
 
   for(it; it != sa.end(); ++it){
     Patient patient = *it;
-    temps = patient.get_tempAttente() + delaiTraitement * i;
-    baremeTemps = tab[patient.get_priorite() - 2];
 
-    if(temps > baremeTemps){
+    if( (patient.get_tempAttente() + delaiTraitement * i) > (tab[patient.get_priorite() - 2]) ){
       cout << patient.get_noPatient() << endl;
       sa.insert(sa.end(), patient);
       sa.erase(it);
@@ -268,15 +274,11 @@ void deuxiemeTri(vector<Patient> &sa, int delaiTraitement){
   }
 }
 
-
-
-int main(int argc, char *arcv[]){
-        //enum {prior2, prior3, prior4, prior5};
+int main(int argc, char *argv[]){
         vector<Patient> salleAttente;
-        const int tempTraitement = lireTemps(argc, arcv[2]);
-      //  const int tempPriorite[4] = {15, 30, 60, 120};
+        const int tempTraitement = lireTemps(argc, argv[2]);
 
-        readFile(arcv[1], &salleAttente);
+        lireFichier(argv[1], &salleAttente);
         cout << "-------TEST VECTOR premier tri--------" << endl;
         sort(salleAttente.begin(), salleAttente.begin()+salleAttente.size());
         imprimerSalleAttente(salleAttente);
