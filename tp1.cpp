@@ -29,6 +29,7 @@
 #include <algorithm>
 #include <math.h>
 using namespace std;
+static const int tab[4] = {15 ,30, 60 ,120};
 
 int findElem(const vector<int> v, int elem);
 /**
@@ -48,6 +49,7 @@ class Patient {
             : _noPatient(noPatient), _tempAttente(tempAttente), _priorite(priorite) {
     }
     ~Patient() {}
+    int get_noPatient();
     int get_priorite();
     int get_tempAttente();
     void set_tempAttente(int tempAttente);
@@ -61,19 +63,27 @@ class Patient {
        On suppose que le DERNIER element du vecteur est CELUI QUI DOIT PASSER EN DERNIER
        p1 < p2 : suppose que p1 est plus prioritaire que p2
      */
-bool operator< (const Patient &p1, const Patient &p2){
-            bool p1PlusPrioritairep2 = false;
-            if (p1._priorite < p2._priorite) {
-                    p1PlusPrioritairep2 = true;
+bool operator < (const Patient &p1, const Patient &p2){
+    bool p1PlusPrioritairep2 = false;
+    /*
+    double quotientP1 = (double)p1._tempAttente/(double)tab[p1._priorite - 2];
+    double quotientP2 = (double)p2._tempAttente/(double)tab[p2._priorite - 2];
+
+    if(quotientP1 > quotientP2){
+        p1PlusPrioritairep2 = true;
+    }
+**/
+    if (p1._priorite < p2._priorite) {
+        p1PlusPrioritairep2 = true;
+    }else {
+        if (p1._priorite == p2._priorite) {
+            if (p1._tempAttente < p2._tempAttente) {
+                p1PlusPrioritairep2 = true;
             }
-            else {
-                    if (p1._priorite == p2._priorite) {
-                            if (p1._tempAttente > p2._tempAttente) {
-                                    p1PlusPrioritairep2 = true;
-                            }
-                    }
-            }
-            return p1PlusPrioritairep2;
+        }
+    }
+
+    return p1PlusPrioritairep2;
     }
 
 
@@ -109,6 +119,10 @@ istream& operator >> (istream& is, Patient& patient) {
    A potentiellement enlever vu que le friendship avec << et >> nous permettent de
    lire des patients dans un vecteur facilement
  */
+ int Patient::get_noPatient(){
+         return _noPatient;
+ }
+
 int Patient::get_tempAttente(){
         return _tempAttente;
 }
@@ -133,7 +147,7 @@ void readFile(char *arcv, vector<Patient> *vp){
 /**
  * findElem     Comme <vector> ne semblait pas offrir une fonction qui retourne
  * la premiere occurence d'un element dans un ensemble, nous avons fait une
- * petite fonction qui parcours l'ensemble
+ * petite fonction qui parcours l'ensemblesolodallas
  * @param  v    vector dans lequel la recherche se fait
  * @param  elem Element recherche
  * @return      Retourne la premiere occurence dans l'ensemble
@@ -192,17 +206,18 @@ int lireTemps(int argc, char *argv){
             exit(-1);
        }
     }
-    
-    
+
+
     return tempsConsultation;
 }
 
-void statistiques(vector<Patient> &sa, const int tab[]){
+void statistiques(vector<Patient> &sa){
     int i = 0;
     double moyenneGeo = 1;
     double resultat = 0;
     double nbPatient[4] = {0,0,0,0};
     double nbPatientCorrect[4] = {0,0,0,0};
+    double racine = 4;
 
 
     for(i ; i < sa.size(); ++i){
@@ -220,27 +235,53 @@ void statistiques(vector<Patient> &sa, const int tab[]){
             cout << resultat << "\t" << endl;
             moyenneGeo *= resultat;
         }else{
-            cout << "Division par zero" << endl;
+            --racine;
         }
-        pow(moyenneGeo, 0.25);
+        pow(moyenneGeo, 1/racine);
     }
 
     cout << moyenneGeo  << endl;
 }
 
+void deuxiemeTri(vector<Patient> &sa, int delaiTraitement){
+  int i = 0;
+  int temps = 0;
+  int baremeTemps = 0;
+  vector<Patient>::iterator it;
+  Patient patient;
+
+  it = sa.begin();
+
+  for(it; it != sa.end(); ++it){
+    Patient patient = *it;
+    temps = patient.get_tempAttente() + delaiTraitement * i;
+    baremeTemps = tab[patient.get_priorite() - 2];
+
+    if(temps > baremeTemps){
+      cout << patient.get_noPatient() << endl;
+      sa.insert(sa.end(), patient);
+      sa.erase(it);
+      it = sa.begin() + i - 1;
+    }
+  ++i;
+  }
+}
+
+
+
 int main(int argc, char *arcv[]){
-        enum {prior2, prior3, prior4, prior5};
+        //enum {prior2, prior3, prior4, prior5};
         vector<Patient> salleAttente;
         const int tempTraitement = lireTemps(argc, arcv[2]);
-        const int tempPriorite[4] = {15, 30, 60, 120};
+      //  const int tempPriorite[4] = {15, 30, 60, 120};
+
         readFile(arcv[1], &salleAttente);
-        cout << "-------TEST VECTOR--------" << endl;
-        imprimerSalleAttente(salleAttente);
         cout << "-------TEST VECTOR Trie--------" << endl;
         sort(salleAttente.begin(), salleAttente.begin()+salleAttente.size());
         imprimerSalleAttente(salleAttente);
         cout << "-------TEST VECTOR apres traitement--------" << endl;
-        traiterSalleAttente(salleAttente, 5);
+        deuxiemeTri(salleAttente, tempTraitement);
+        traiterSalleAttente(salleAttente, tempTraitement);
         imprimerSalleAttente(salleAttente);
-        statistiques(salleAttente, tempPriorite);
+        statistiques(salleAttente);
 }
