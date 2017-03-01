@@ -78,7 +78,7 @@ bool operator < (const Patient &p1, const Patient &p2){
         p1PlusPrioritairep2 = true;
     }else {
         if (p1._priorite == p2._priorite) {
-            if (p1._tempAttente < p2._tempAttente) {
+            if (p1._tempAttente > p2._tempAttente) {
                 p1PlusPrioritairep2 = true;
             }
         }
@@ -277,11 +277,15 @@ int main(int argc, char *arcv[]){
       //  const int tempPriorite[4] = {15, 30, 60, 120};
 
         readFile(arcv[1], &salleAttente);
-        cout << "-------TEST VECTOR Trie--------" << endl;
+        cout << "-------TEST VECTOR premier tri--------" << endl;
         sort(salleAttente.begin(), salleAttente.begin()+salleAttente.size());
         imprimerSalleAttente(salleAttente);
-        cout << "-------TEST VECTOR apres traitement--------" << endl;
+
+        cout << "-------TEST VECTOR deuxieme tri--------" << endl;
         deuxiemeTri(salleAttente, tempTraitement);
+        imprimerSalleAttente(salleAttente);
+
+        cout << "-------TEST VECTOR apres traitement--------" << endl;
         traiterSalleAttente(salleAttente, tempTraitement);
         imprimerSalleAttente(salleAttente);
         statistiques(salleAttente);
