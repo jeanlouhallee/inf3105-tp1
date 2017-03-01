@@ -65,14 +65,15 @@ class Patient {
      */
 bool operator < (const Patient &p1, const Patient &p2){
     bool p1PlusPrioritairep2 = false;
-    /*
-    double quotientP1 = (double)p1._tempAttente/(double)tab[p1._priorite - 2];
-    double quotientP2 = (double)p2._tempAttente/(double)tab[p2._priorite - 2];
 
-    if(quotientP1 > quotientP2){
+  //  double quotientP1 = (double)p1._tempAttente/(double)tab[p1._priorite - 2];
+    //double quotientP2 = (double)p2._tempAttente/(double)tab[p2._priorite - 2];
+/**
+    if((double)p1._tempAttente/(double)tab[p1._priorite - 2] > (double)p2._tempAttente/(double)tab[p2._priorite - 2]){
         p1PlusPrioritairep2 = true;
     }
-**/
+    **/
+
     if (p1._priorite < p2._priorite) {
         p1PlusPrioritairep2 = true;
     }else {
