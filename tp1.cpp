@@ -60,6 +60,7 @@ bool operator < (const Patient &p1, const Patient &p2){
             }
         }
     }
+
     return p1PlusPrioritairep2;
     }
 
@@ -251,23 +252,33 @@ void statistiques(vector<Patient> &sa){
  */
 void deuxiemeTri(vector<Patient> &sa, int delaiTraitement){
   int i = 0;
-  int temps = 0;
-  int baremetemps = 0;
-  vector<Patient>::iterator it;
-  Patient patient;
+  int j = 0;
+  int priorite = 0;
+  bool doitFin[4] = {false, false, false, false};
+  vector<Patient>::iterator it = sa.begin();
+//  Patient patient;
 
-  it = sa.begin();
-
-  for(it; it != sa.end(); ++it){
-    Patient patient = *it;
-
-    if( (patient.get_tempsAttente() + delaiTraitement * i) > (tab[patient.get_priorite() - 2]) ){
-      cout << patient.get_noPatient() << endl;
-      sa.insert(sa.end(), patient);
+  for(it; it != sa.end() && j < sa.size(); ++it){
+  //  Patient patient = *it;
+    it = sa.begin() + i;
+    cout << it->get_noPatient() << " loop" << endl;
+    if(doitFin[it->get_priorite() - 2]){
+      cout << it->get_noPatient() << " cascade" << endl;
+      sa.insert(sa.end(), *it);
       sa.erase(it);
-      it = sa.begin() + i - 1;
+      it = sa.begin() + i+ 1;
+
+    }else if( (it->get_tempsAttente() + delaiTraitement * i) > (tab[it->get_priorite() - 2]) ){
+      priorite = it->get_priorite();
+      doitFin[it->get_priorite() - 2] = true;
+      cout << it->get_noPatient() << endl;
+      sa.insert(sa.end(), *it);
+      sa.erase(it);
+      it = sa.begin() + i + 1;
+
     }
   ++i;
+  ++j;
   }
 }
 
